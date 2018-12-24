@@ -11,12 +11,13 @@ import WorkOutlineIcon from "@material-ui/icons/WorkOutline";
 import PropTypes from "prop-types";
 import React, { Component, Fragment } from "react";
 import { Route, Switch } from "react-router-dom";
-import OfferDetail from "../OfferDetail";
-import OfferList from "../OfferList";
+import Offer from "./offer";
+import Offers from "./offers";
+import Mine from "./mine";
 
-import "./Main.scss";
+import "./jobs.scss";
 
-class Main extends Component {
+class Jobs extends Component {
     render() {
         const { match } = this.props;
         return (
@@ -34,9 +35,9 @@ class Main extends Component {
 
                 <div className="container">
                     <Switch>
-                        <Route path={`${match.url}`} exact component={OfferList} />
-                        <Route path={`${match.url}/:id`} component={OfferDetail} />
-                        <Route path={`${match.url}/mine`} component={OfferList} />
+                        <Route path={`${match.url}`} exact component={Offers} />
+                        <Route path={`${match.url}/:id`} component={Offer} />
+                        <Route path={`${match.url}/mine`} component={Mine} />
                     </Switch>
                 </div>
 
@@ -50,8 +51,8 @@ class Main extends Component {
     }
 }
 
-Main.propTypes = {
+Jobs.propTypes = {
     match: PropTypes.any,
 };
 
-export default Main;
+export default Jobs;

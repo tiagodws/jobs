@@ -4,13 +4,13 @@ import MapOutlinedIcon from "@material-ui/icons/MapOutlined";
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
-import "./Offer.scss";
+import "./offers-item.scss";
 
-class Offer extends Component {
+class offer extends Component {
     render() {
         const { offer, theme } = this.props;
         const { id, title, earningTotal, earningHourly, location, jobCategoryKey } = offer;
-        const OfferActionsWithRouter = withRouter(OfferActions);
+        const OfferActionsWithRouter = withRouter(offerActions);
         const { primary } = theme.palette.text;
 
         return (
@@ -44,7 +44,7 @@ class Offer extends Component {
     }
 }
 
-function OfferActions({ id, match }) {
+function offerActions({ id, match }) {
     return (
         <Grid container spacing={8} justify="center" alignItems="center">
             <Grid item xs={12}>
@@ -63,6 +63,6 @@ function OfferActions({ id, match }) {
     );
 }
 
-const WithTheme = withTheme()(Offer);
+const WithTheme = withTheme()(offer);
 
 export default WithTheme;

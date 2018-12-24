@@ -1,17 +1,25 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import { checkAuthentication } from "../shared/auth";
 
 function withAuth(WrappedComponent) {
     class WithAuth extends Component {
+        constructor(props) {
+            super(props);
+
+            this.state = {
+                authenticated: false,
+            };
+        }
         componentWillMount() {
-            const { authenticated } = this.props;
+            const authenticated = checkAuthentication();
             if (!authenticated) this.goToLogin();
+            else this.setState({ authenticated });
         }
 
-        componentWillUpdate(nextProps) {
-            const { authenticated } = nextProps;
+        componentWillUpdate() {
+            const authenticated = checkAuthentication();
             if (!authenticated) this.goToLogin();
+            else this.setState({ authenticated });
         }
 
         goToLogin() {
@@ -20,22 +28,12 @@ function withAuth(WrappedComponent) {
         }
 
         render() {
-            const { authenticated } = this.props;
-            if (!authenticated) return null;
+            if (!this.state.authenticated) return null;
             return <WrappedComponent {...this.props} />;
         }
     }
 
-    function mapStateToProps({ auth }) {
-        return { authenticated: Boolean(auth.token) };
-    }
-
-    WithAuth.propTypes = {
-        authenticated: PropTypes.bool,
-        history: PropTypes.any,
-    };
-
-    return connect(mapStateToProps)(WithAuth);
+    return WithAuth;
 }
 
 export default withAuth;

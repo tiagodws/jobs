@@ -1,12 +1,9 @@
-import CircularProgress from "@material-ui/core/CircularProgress";
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { fetchOffer } from "../../actions";
+import { Component } from "react";
 import { withRouter } from "react-router";
 
-class OfferDetail extends Component {
+class Offer extends Component {
     componentDidMount() {
-        console.log("oi")
+        console.log("oi");
         // const { id } = this.props.match.params;
         // this.props.fetchOffer(id);
     }
@@ -19,19 +16,8 @@ class OfferDetail extends Component {
         // if (loading) return <CircularProgress color="secondary" />;
         // else if (error) return <span>Error State</span>;
         // else if (!offer) return <span>Empty State</span>;
-        // return <div>Offer {offer.id}</div>;
+        // return <div>offer {offer.id}</div>;
     }
 }
 
-function mapStateToProps({ offerDetail }) {
-    return {
-        offerDetail,
-    };
-}
-
-// const WithRouter = withRouter(OfferDetail);
-
-export default connect(
-    mapStateToProps,
-    { fetchOffer }
-)(OfferDetail);
+export default withRouter(Offer);

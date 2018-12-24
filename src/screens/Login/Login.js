@@ -2,30 +2,53 @@ import Button from "@material-ui/core/Button";
 import { withTheme } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Field, reduxForm } from "redux-form";
-import { email, required } from "redux-form-validators";
-import { authUser } from "../../actions";
-import "./Login.scss";
+import { login } from "../../shared/api";
+import { checkAuthentication, authUser } from "../../shared/auth";
+import "./login.scss";
+import { TableBody } from "@material-ui/core";
 
 class Login extends Component {
     constructor(props) {
         super(props);
-        this.onFormSubmit = this.onFormSubmit.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
     }
 
-    componentWillReceiveProps({ authenticated }) {
+    componentWillMount() {
         const { history } = this.props;
-        if (authenticated) history.push("/");
+        if (checkAuthentication()) history.push("/");
     }
 
-    onFormSubmit({ username, password }) {
-        const { authUser } = this.props;
-        authUser(username, password);
+    handleSubmit(event) {
+        const { history } = this.props;
+        const { username, password } = this.state;
+
+        event.preventDefault();
+        this.setState({ loading: true });
+
+        login(username, password)
+            .then(({ response, body }) => {
+                if (response.ok) {
+                    authUser(body);
+                    history.push("/");
+                } else {
+                    throw body.error;
+                }
+            })
+            .catch(error => this.setState({ error, loading: false }));
+    }
+
+    handleInputChange(event) {
+        const { target } = event;
+        const { value, name } = target;
+
+        this.setState({
+            [name]: value,
+        });
     }
 
     render() {
-        const { handleSubmit, theme } = this.props;
+        const { theme } = this.props;
         const { primary } = theme.palette.text;
 
         return (
@@ -33,16 +56,16 @@ class Login extends Component {
                 <h1 className="page-title" style={{ color: primary }}>
                     Login
                 </h1>
-                <form onSubmit={handleSubmit(this.onFormSubmit)} noValidate autoComplete="off">
-                    <Field
-                        label="Email"
-                        name="username"
-                        component={this.renderField}
-                        type="email"
+                <form onSubmit={this.handleSubmit} noValidate>
+                    <TextField name="username" label="Email" placeholder="Email" required type="email" onChange={this.handleInputChange} />
+                    <TextField
+                        name="password"
+                        label="Password"
+                        placeholder="Password"
                         required
-                        validate={[required(), email()]}
+                        type="password"
+                        onChange={this.handleInputChange}
                     />
-                    <Field label="Password" name="password" component={this.renderField} type="password" required validate={[required()]} />
 
                     <Button variant="contained" color="secondary" type="submit">
                         Login
@@ -51,24 +74,6 @@ class Login extends Component {
             </div>
         );
     }
-
-    renderField({ input, type, required, label, meta }) {
-        const hasError = Boolean(meta.touched && meta.error);
-        return <TextField label={label} required={required} type={type} placeholder={label} error={hasError} {...input} />;
-    }
 }
 
-function mapStateToProps({ auth }) {
-    return { authenticated: Boolean(auth.token) };
-}
-
-const WithTheme = withTheme()(Login);
-const WithReduxForm = reduxForm({
-    form: "login",
-    fields: ["username", "password"],
-})(WithTheme);
-
-export default connect(
-    mapStateToProps,
-    { authUser }
-)(WithReduxForm);
+export default withTheme()(Login);
