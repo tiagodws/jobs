@@ -11,11 +11,11 @@ import WorkOutlineIcon from "@material-ui/icons/WorkOutline";
 import PropTypes from "prop-types";
 import React, { Component, Fragment } from "react";
 import { Route, Switch } from "react-router-dom";
+import withAuth from "../../hocs/with-auth";
+import "./jobs.scss";
+import Mine from "./mine";
 import Offer from "./offer";
 import Offers from "./offers";
-import Mine from "./mine";
-
-import "./jobs.scss";
 
 class Jobs extends Component {
     render() {
@@ -35,9 +35,9 @@ class Jobs extends Component {
 
                 <div className="container">
                     <Switch>
-                        <Route path={`${match.url}`} exact component={Offers} />
-                        <Route path={`${match.url}/:id`} component={Offer} />
-                        <Route path={`${match.url}/mine`} component={Mine} />
+                        <Route path={`${match.url}`} exact render={props => <Offers {...props} />} />
+                        <Route path={`${match.url}/:id`} render={props => <Offer {...props} />} />
+                        <Route path={`${match.url}/mine`} render={props => <Mine {...props} />} />
                     </Switch>
                 </div>
 
@@ -55,4 +55,4 @@ Jobs.propTypes = {
     match: PropTypes.any,
 };
 
-export default Jobs;
+export default withAuth(Jobs);
