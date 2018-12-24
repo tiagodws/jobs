@@ -10,6 +10,7 @@ import LoadingState from "../../../components/loading-state";
 import PricingTable from "../../../components/princing-table";
 import ShiftInfo from "../../../components/shift-info";
 import LocationInfo from "../../../components/location-info";
+import BreakInfo from "../../../components/break-info";
 import { fetchOffer } from "../../../shared/api";
 import OfferBar from "./components/offer-bar";
 
@@ -124,6 +125,12 @@ class Offer extends Component {
                                     {offer.shifts.map((shift, i) => (
                                         <ShiftInfo key={i} beginDate={shift.beginDate} endDate={shift.endDate} />
                                     ))}
+                                </div>
+                            </Grid>
+
+                            <Grid container item xs={12}>
+                                <div className={classes.infoBlock}>
+                                    <BreakInfo breakTypes={offer.breakTypes} />
                                 </div>
                             </Grid>
 

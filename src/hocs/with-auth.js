@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { checkAuthentication } from "../shared/auth";
+import { hasValidToken } from "../shared/auth";
 
 function withAuth(WrappedComponent) {
     class WithAuth extends Component {
@@ -12,12 +12,12 @@ function withAuth(WrappedComponent) {
         }
 
         componentDidMount() {
-            const authenticated = checkAuthentication();
+            const authenticated = hasValidToken();
             this.setState({ authenticated });
         }
 
         shouldComponentUpdate() {
-            const authenticated = checkAuthentication();
+            const authenticated = hasValidToken();
             if (authenticated) return true;
             this.goToLogin();
             return false;

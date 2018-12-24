@@ -12,7 +12,7 @@ export function getTokenData() {
     }
 }
 
-export function checkAuthentication() {
+export function hasValidToken() {
     const tokenData = getTokenData();
     const valid = tokenData && moment().isBefore(tokenData.expire_date);
     return valid;

@@ -4,7 +4,7 @@ import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import React, { Component } from "react";
 import { login } from "../../shared/api";
-import { authUser, checkAuthentication } from "../../shared/auth";
+import { authUser, hasValidToken } from "../../shared/auth";
 
 const styles = {
     container: {
@@ -26,7 +26,7 @@ class Login extends Component {
 
     componentWillMount() {
         const { history } = this.props;
-        if (checkAuthentication()) history.push("/");
+        if (hasValidToken()) history.push("/");
     }
 
     handleSubmit(event) {
@@ -62,14 +62,14 @@ class Login extends Component {
 
         return (
             <div className={classes.container}>
-                <Typography component="h1" variant="overline">
+                <Typography component="h1" variant="overline" color="textPrimary">
                     Login
                 </Typography>
                 <form onSubmit={this.handleSubmit} noValidate>
                     <Grid container spacing={16}>
                         <Grid item xs={12}>
                             <FormControl fullWidth>
-                                <TextField name="username" label="Email" required type="email" onChange={this.handleInputChange} />
+                                <TextField name="username" label="Email" required type="email" onChange={this.handleInputChange}/>
                             </FormControl>
                         </Grid>
                         <Grid item xs={12}>
