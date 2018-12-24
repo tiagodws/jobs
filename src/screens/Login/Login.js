@@ -1,4 +1,4 @@
-import { FormControl, Grid, Typography } from "@material-ui/core";
+import { FormControl, Grid, Typography, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
@@ -20,8 +20,12 @@ const styles = {
 class Login extends Component {
     constructor(props) {
         super(props);
+
+        this.state = { loading: false, error: undefined, dialogOpen: false, username: "", password: "" };
+
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleDialogClose = this.handleDialogClose.bind(this);
     }
 
     componentWillMount() {
@@ -34,7 +38,7 @@ class Login extends Component {
         const { username, password } = this.state;
 
         event.preventDefault();
-        this.setState({ loading: true });
+        this.setState({ loading: true, error: undefined });
 
         login(username, password)
             .then(({ response, body }) => {
@@ -45,7 +49,7 @@ class Login extends Component {
                     throw body.error;
                 }
             })
-            .catch(error => this.setState({ error, loading: false }));
+            .catch(error => this.setState({ error, loading: false, dialogOpen: true }));
     }
 
     handleInputChange(event) {
@@ -55,6 +59,10 @@ class Login extends Component {
         this.setState({
             [name]: value,
         });
+    }
+
+    handleDialogClose() {
+        this.setState({ dialogOpen: false });
     }
 
     render() {
@@ -69,7 +77,7 @@ class Login extends Component {
                     <Grid container spacing={16}>
                         <Grid item xs={12}>
                             <FormControl fullWidth>
-                                <TextField name="username" label="Email" required type="email" onChange={this.handleInputChange}/>
+                                <TextField name="username" label="Email" required type="email" onChange={this.handleInputChange} />
                             </FormControl>
                         </Grid>
                         <Grid item xs={12}>
@@ -85,6 +93,25 @@ class Login extends Component {
                         </Grid>
                     </Grid>
                 </form>
+
+                <Dialog
+                    open={this.state.dialogOpen}
+                    onClose={this.handleDialogClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">Error</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Oops, an error has occurred. Check your email and password.
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.handleDialogClose} color="secondary" autoFocus>
+                            Ok
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </div>
         );
     }
