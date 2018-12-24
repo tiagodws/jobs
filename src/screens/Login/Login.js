@@ -1,11 +1,21 @@
+import { FormControl, Grid, Typography } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import { withTheme } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import React, { Component } from "react";
 import { login } from "../../shared/api";
-import { checkAuthentication, authUser } from "../../shared/auth";
-import "./login.scss";
-import { TableBody } from "@material-ui/core";
+import { authUser, checkAuthentication } from "../../shared/auth";
+
+const styles = {
+    container: {
+        display: "flex",
+        height: "100%",
+        padding: 16,
+        flexDirection: "column",
+        backgroundColor: "#93e7cf",
+        textAlign: "center",
+    },
+};
 
 class Login extends Component {
     constructor(props) {
@@ -48,32 +58,36 @@ class Login extends Component {
     }
 
     render() {
-        const { theme } = this.props;
-        const { primary } = theme.palette.text;
+        const { classes } = this.props;
 
         return (
-            <div className="login">
-                <h1 className="page-title" style={{ color: primary }}>
+            <div className={classes.container}>
+                <Typography component="h1" variant="overline">
                     Login
-                </h1>
+                </Typography>
                 <form onSubmit={this.handleSubmit} noValidate>
-                    <TextField name="username" label="Email" placeholder="Email" required type="email" onChange={this.handleInputChange} />
-                    <TextField
-                        name="password"
-                        label="Password"
-                        placeholder="Password"
-                        required
-                        type="password"
-                        onChange={this.handleInputChange}
-                    />
+                    <Grid container spacing={16}>
+                        <Grid item xs={12}>
+                            <FormControl fullWidth>
+                                <TextField name="username" label="Email" required type="email" onChange={this.handleInputChange} />
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <FormControl fullWidth>
+                                <TextField name="password" label="Password" required type="password" onChange={this.handleInputChange} />
+                            </FormControl>
+                        </Grid>
 
-                    <Button variant="contained" color="secondary" type="submit">
-                        Login
-                    </Button>
+                        <Grid item xs={12}>
+                            <Button variant="contained" color="secondary" type="submit" fullWidth>
+                                Login
+                            </Button>
+                        </Grid>
+                    </Grid>
                 </form>
             </div>
         );
     }
 }
 
-export default withTheme()(Login);
+export default withStyles(styles)(Login);

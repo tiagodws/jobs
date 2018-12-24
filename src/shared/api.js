@@ -30,7 +30,3 @@ export function login(username, password) {
         })
     );
 }
-
-export function deauthUser() {
-    return { type: "DEAUTH_USER" };
-}

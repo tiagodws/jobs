@@ -15,6 +15,11 @@ const theme = createMuiTheme({
     },
     typography: {
         useNextVariants: true,
+        overline: {
+            fontSize: "1rem",
+            lineHeight: 2,
+            color: "#999999",
+        },
     },
 });
 

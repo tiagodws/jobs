@@ -1,38 +1,49 @@
-import { Button, Grid, Paper } from "@material-ui/core";
-import { withTheme } from "@material-ui/core/styles";
+import { Button, Grid, Paper, Typography } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
 import MapOutlinedIcon from "@material-ui/icons/MapOutlined";
-import AssignmentIcon from "@material-ui/icons/Assignment";
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
-import "./offers-item.scss";
+import OffersItemHero from "./components/offers-item-hero";
+import ShiftInfo from "../../../../../components/shift-info";
+
+const styles = {
+    container: {
+        overflow: "hidden",
+    },
+    content: {
+        padding: "16px 24px",
+    },
+    location: {
+        display: "flex",
+    },
+    locationIcon: {
+        marginRight: 8,
+    },
+};
 
 class offer extends Component {
     render() {
-        const { offer, theme } = this.props;
-        const { id, title, earningTotal, earningHourly, location, jobCategoryKey } = offer;
-        const OfferActionsWithRouter = withRouter(offerActions);
-        const { primary } = theme.palette.text;
+        const { offer, classes } = this.props;
+        const { id, location } = offer;
 
         return (
-            <Paper className="card">
-                <div className="hero" style={{ color: primary }}>
-                    <AssignmentIcon style={{ fontSize: 30 }} />
-                    <span className="category-name">{jobCategoryKey}</span>
-                    <h2 className="title">{title}</h2>
-                    <div className="earning-total">{earningTotal}</div>
-                    <div className="earning-hourly">{earningHourly} pro Stunde</div>
-                </div>
+            <Paper className={classes.container}>
+                <OffersItemHero offer={offer} />
 
-                <div className="card-content">
+                <div className={classes.content}>
                     <Grid container spacing={16} justify="center" alignItems="center">
                         <Grid item xs={12}>
-                            <div className="info">
-                                <div className="location">
-                                    <MapOutlinedIcon />
-                                    <span className="name">{location.locationDisplayName}</span>
-                                </div>
+                            <div className={classes.location}>
+                                <MapOutlinedIcon className={classes.locationIcon} />
+                                <Typography variant="body1">{location.locationDisplayName}</Typography>
                             </div>
                         </Grid>
+
+                        {offer.shifts.map((shift, i) => (
+                            <Grid key={i} item xs={12}>
+                                <ShiftInfo beginDate={shift.beginDate} endDate={shift.endDate} />
+                            </Grid>
+                        ))}
 
                         <Grid item xs={12}>
                             <OfferActionsWithRouter id={id} />
@@ -44,7 +55,9 @@ class offer extends Component {
     }
 }
 
-function offerActions({ id, match }) {
+const OfferActionsWithRouter = withRouter(OfferActions);
+
+function OfferActions({ id, match }) {
     return (
         <Grid container spacing={8} justify="center" alignItems="center">
             <Grid item xs={12}>
@@ -63,6 +76,4 @@ function offerActions({ id, match }) {
     );
 }
 
-const WithTheme = withTheme()(offer);
-
-export default WithTheme;
+export default withStyles(styles)(offer);

@@ -3,6 +3,19 @@ import { checkAuthentication } from "../shared/auth";
 
 function withAuth(WrappedComponent) {
     class WithAuth extends Component {
+        constructor(props) {
+            super(props);
+
+            this.state = {
+                authenticated: false,
+            };
+        }
+
+        componentDidMount() {
+            const authenticated = checkAuthentication();
+            this.setState({ authenticated });
+        }
+
         shouldComponentUpdate() {
             const authenticated = checkAuthentication();
             if (authenticated) return true;
@@ -16,6 +29,8 @@ function withAuth(WrappedComponent) {
         }
 
         render() {
+            const { authenticated } = this.state;
+            if (!authenticated) return null;
             return <WrappedComponent {...this.props} />;
         }
     }
