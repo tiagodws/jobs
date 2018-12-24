@@ -1,7 +1,8 @@
-import { Typography, AppBar, Toolbar, IconButton } from "@material-ui/core";
-import AssignmentIcon from "@material-ui/icons/Assignment";
+import { AppBar, IconButton, Toolbar, Typography } from "@material-ui/core";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import AssignmentIcon from "@material-ui/icons/Assignment";
 import { withStyles } from "@material-ui/styles";
+import PropTypes from "prop-types";
 import React from "react";
 
 const styles = {
@@ -27,7 +28,7 @@ const styles = {
     category: { fontSize: "0.8rem", textTransform: "uppercase", marginBottom: 16 },
 };
 
-function OffersItemHero(props) {
+function OfferBar(props) {
     const { classes, offer, onGoBack } = props;
     return (
         <AppBar position="static" className={classes.appBar}>
@@ -58,4 +59,10 @@ function OfferInfo(props) {
     );
 }
 
-export default withStyles(styles)(OffersItemHero);
+OfferBar.propTypes = {
+    offer: PropTypes.object,
+    classes: PropTypes.object.isRequired,
+    onGoBack: PropTypes.func.isRequired,
+};
+
+export default withStyles(styles)(OfferBar);

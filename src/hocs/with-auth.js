@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { hasValidToken } from "../shared/auth";
+import PropTypes from "prop-types";
 
 function withAuth(WrappedComponent) {
     class WithAuth extends Component {
@@ -34,6 +35,10 @@ function withAuth(WrappedComponent) {
             return <WrappedComponent {...this.props} />;
         }
     }
+
+    WithAuth.propTypes = {
+        history: PropTypes.object.isRequired,
+    };
 
     return WithAuth;
 }

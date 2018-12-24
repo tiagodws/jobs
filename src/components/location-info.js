@@ -1,4 +1,5 @@
 import { Button, Grid, Typography } from "@material-ui/core";
+import PropTypes from "prop-types";
 import React, { Fragment } from "react";
 
 import { getSearchUrl } from "../shared/maps";
@@ -20,7 +21,7 @@ function LocationInfo(props) {
                     </Grid>
 
                     <Grid item xs={4}>
-                        <Button href={getSearchUrl(locationSearchString)} target="_blank" variant="contained" color="secondary" fullWidth>
+                        <Button href={getSearchUrl(locationSearchString)} target="_blank" variant="contained" color="primary" fullWidth>
                             Maps
                         </Button>
                     </Grid>
@@ -29,5 +30,9 @@ function LocationInfo(props) {
         </Fragment>
     );
 }
+
+LocationInfo.propTypes = {
+    location: PropTypes.object.isRequired,
+};
 
 export default LocationInfo;

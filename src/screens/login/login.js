@@ -1,8 +1,10 @@
-import { FormControl, Grid, Typography, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from "@material-ui/core";
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, Grid, Typography } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
+import PropTypes from "prop-types";
 import React, { Component } from "react";
+
 import { login } from "../../shared/api";
 import { authUser, hasValidToken } from "../../shared/auth";
 
@@ -67,27 +69,44 @@ class Login extends Component {
 
     render() {
         const { classes } = this.props;
+        const { username, password } = this.state;
 
         return (
             <div className={classes.container}>
                 <Typography component="h1" variant="overline" color="textPrimary">
                     Login
                 </Typography>
+
                 <form onSubmit={this.handleSubmit} noValidate>
                     <Grid container spacing={16}>
                         <Grid item xs={12}>
                             <FormControl fullWidth>
-                                <TextField name="username" label="Email" required type="email" onChange={this.handleInputChange} />
-                            </FormControl>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <FormControl fullWidth>
-                                <TextField name="password" label="Password" required type="password" onChange={this.handleInputChange} />
+                                <TextField
+                                    name="username"
+                                    value={this.state.username}
+                                    label="Email"
+                                    required
+                                    type="email"
+                                    onChange={this.handleInputChange}
+                                />
                             </FormControl>
                         </Grid>
 
                         <Grid item xs={12}>
-                            <Button variant="contained" color="secondary" type="submit" fullWidth>
+                            <FormControl fullWidth>
+                                <TextField
+                                    name="password"
+                                    value={this.state.password}
+                                    label="Password"
+                                    required
+                                    type="password"
+                                    onChange={this.handleInputChange}
+                                />
+                            </FormControl>
+                        </Grid>
+
+                        <Grid item xs={12}>
+                            <Button variant="contained" color="primary" type="submit" disabled={!username || !password} fullWidth>
                                 Login
                             </Button>
                         </Grid>
@@ -116,5 +135,10 @@ class Login extends Component {
         );
     }
 }
+
+Login.propTypes = {
+    classes: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
+};
 
 export default withStyles(styles)(Login);

@@ -18,11 +18,15 @@ import MenuIcon from "@material-ui/icons/Menu";
 import NotificationsNoneOutlinedIcon from "@material-ui/icons/NotificationsNoneOutlined";
 import WorkOutlineIcon from "@material-ui/icons/WorkOutline";
 import { withStyles } from "@material-ui/styles";
-import React, { Component } from "react";
+import PropTypes from "prop-types";
+import React, { Component, Fragment } from "react";
+
 import ErrorState from "../../../components/error-state";
 import LoadingState from "../../../components/loading-state";
-import { fetchOffers } from "../../../shared/api";
+import { declineOffer, fetchOffers } from "../../../shared/api";
 import { deauthUser } from "../../../shared/auth";
+import DeclineCommentDialog from "./components/dialogs/decline-comment-dialog";
+import DeclineReasonDialog from "./components/dialogs/decline-reason-dialog";
 import EmptyState from "./components/empty-state";
 import OffersItem from "./components/offers-item";
 
@@ -64,11 +68,19 @@ class Offers extends Component {
             loading: true,
             error: undefined,
             menuOpen: false,
+            reasonDialogOpen: false,
+            commentDialogOpen: false,
+            declineId: undefined,
+            declineReason: undefined,
+            declineComment: undefined,
         };
 
         this.handleTryAgain = this.handleTryAgain.bind(this);
         this.handleMenuToggle = this.handleMenuToggle.bind(this);
         this.handleLogoffClick = this.handleLogoffClick.bind(this);
+        this.handleDeclineOffer = this.handleDeclineOffer.bind(this);
+        this.handleReasonDialogClose = this.handleReasonDialogClose.bind(this);
+        this.handleCommentDialogClose = this.handleCommentDialogClose.bind(this);
     }
 
     loadData() {
@@ -97,62 +109,105 @@ class Offers extends Component {
         history.push({ pathname: "/login" });
     }
 
+    handleDeclineOffer(id) {
+        this.setState({ declineId: id, reasonDialogOpen: true });
+    }
+
+    handleReasonDialogClose(declineReason) {
+        const { declineId } = this.state;
+
+        if (!declineReason) return this.setState({ reasonDialogOpen: false, declineReason });
+        if (declineReason.needsComment) return this.setState({ reasonDialogOpen: false, commentDialogOpen: true, declineReason });
+
+        declineOffer(declineId, declineReason.name)
+            .then(() => {
+                this.setState({ reasonDialogOpen: false });
+                this.loadData();
+            })
+            .catch(() => {
+                this.setState({ reasonDialogOpen: false });
+            });
+    }
+
+    handleCommentDialogClose(declineComment) {
+        const { declineId, declineReason } = this.state;
+        declineOffer(declineId, declineReason.name, declineComment)
+            .then(() => {
+                this.setState({ commentDialogOpen: false });
+                this.loadData();
+            })
+            .catch(() => {
+                this.setState({ commentDialogOpen: false });
+            });
+    }
+
     componentDidMount() {
         this.loadData();
     }
 
     render() {
-        const { loading, error, offers } = this.state;
+        const { loading, error, offers, reasonDialogOpen, commentDialogOpen } = this.state;
         const { classes } = this.props;
 
         return (
-            <div className={classes.container}>
-                <AppBar position="static" color="secondary" className={classes.appBar}>
-                    <Toolbar>
-                        <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={this.handleMenuToggle}>
-                            <MenuIcon />
-                        </IconButton>
-                        <Typography variant="h6" color="inherit">
-                            Discover Jobs
-                        </Typography>
-                    </Toolbar>
-                </AppBar>
+            <Fragment>
+                <div className={classes.container}>
+                    <AppBar position="static" color="secondary" className={classes.appBar}>
+                        <Toolbar>
+                            <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={this.handleMenuToggle}>
+                                <MenuIcon />
+                            </IconButton>
+                            <Typography variant="h6" color="inherit">
+                                Discover Jobs
+                            </Typography>
+                        </Toolbar>
+                    </AppBar>
 
-                <Drawer open={this.state.menuOpen} onClose={this.handleMenuToggle}>
-                    <div className={classes.menuList}>
-                        <List>
-                            <ListItem button onClick={this.handleLogoffClick}>
-                                <ListItemIcon>
-                                    <ExitToAppIcon />
-                                </ListItemIcon>
-                                <ListItemText primary={"Logoff"} />
-                            </ListItem>
-                        </List>
-                    </div>
-                </Drawer>
+                    <Drawer open={this.state.menuOpen} onClose={this.handleMenuToggle}>
+                        <div className={classes.menuList}>
+                            <List>
+                                <ListItem button onClick={this.handleLogoffClick}>
+                                    <ListItemIcon>
+                                        <ExitToAppIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary={"Logoff"} />
+                                </ListItem>
+                            </List>
+                        </div>
+                    </Drawer>
 
-                {loading && <LoadingState />}
-                {error && <ErrorState onTryAgain={this.handleTryAgain} />}
-                {!loading && !error && !offers.length && <EmptyState />}
-
-                <div className={classes.contents}>
-                    <Grid container spacing={16} justify="center" alignItems="center">
-                        {offers.map(offer => (
-                            <Grid key={offer.id} item xs={12}>
-                                <OffersItem offer={offer} />
+                    {loading && <LoadingState />}
+                    {error && <ErrorState onTryAgain={this.handleTryAgain} />}
+                    {!loading && !error && !offers.length && <EmptyState />}
+                    {!loading && !error && offers.length && (
+                        <div className={classes.contents}>
+                            <Grid container spacing={16}>
+                                {offers.map(offer => (
+                                    <Grid key={offer.id} item xs={12} sm={6}>
+                                        <OffersItem offer={offer} onDeclineOffer={() => this.handleDeclineOffer(offer.id)} />
+                                    </Grid>
+                                ))}
                             </Grid>
-                        ))}
-                    </Grid>
+                        </div>
+                    )}
+
+                    <BottomNavigation value={1} showLabels className={classes.navigator}>
+                        <BottomNavigationAction label="Tasks" icon={<NotificationsNoneOutlinedIcon />} />
+                        <BottomNavigationAction label="Discover Jobs" icon={<ListOutlinedIcon />} />
+                        <BottomNavigationAction label="My Jobs" icon={<WorkOutlineIcon />} />
+                    </BottomNavigation>
                 </div>
 
-                <BottomNavigation value={1} showLabels className={classes.navigator}>
-                    <BottomNavigationAction label="Tasks" icon={<NotificationsNoneOutlinedIcon />} />
-                    <BottomNavigationAction label="Discover Jobs" icon={<ListOutlinedIcon />} />
-                    <BottomNavigationAction label="My Jobs" icon={<WorkOutlineIcon />} />
-                </BottomNavigation>
-            </div>
+                <DeclineReasonDialog open={reasonDialogOpen} onClose={this.handleReasonDialogClose} />
+                <DeclineCommentDialog open={commentDialogOpen} onClose={this.handleCommentDialogClose} />
+            </Fragment>
         );
     }
 }
+
+Offers.propTypes = {
+    classes: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
+};
 
 export default withStyles(styles)(Offers);

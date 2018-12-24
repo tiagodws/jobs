@@ -1,6 +1,7 @@
 import { Grid, Typography } from "@material-ui/core";
-import { withStyles } from "@material-ui/styles";
 import RotateLeftRoundedIcon from "@material-ui/icons/RotateLeftRounded";
+import { withStyles } from "@material-ui/styles";
+import PropTypes from "prop-types";
 import React from "react";
 
 const styles = {
@@ -32,5 +33,10 @@ function BreakInfo(props) {
         </Grid>
     );
 }
+
+BreakInfo.propTypes = {
+    classes: PropTypes.object.isRequired,
+    breakTypes: PropTypes.array.isRequired,
+};
 
 export default withStyles(styles)(BreakInfo);

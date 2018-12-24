@@ -1,5 +1,6 @@
 import { Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
+import PropTypes from "prop-types";
 import React from "react";
 
 const styles = {
@@ -31,5 +32,9 @@ function EmptyState(props) {
         </div>
     );
 }
+
+EmptyState.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
 
 export default withStyles(styles)(EmptyState);

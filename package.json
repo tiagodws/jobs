@@ -1,10 +1,7 @@
 {
-    "name": "my-app",
+    "name": "tiagodws-jobs",
     "version": "0.1.0",
     "private": true,
-    "devDependencies": {
-        "node-sass": "^4.11.0"
-    },
     "dependencies": {
         "@material-ui/core": "^3.7.0",
         "@material-ui/icons": "^3.0.1",

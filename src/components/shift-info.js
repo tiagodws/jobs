@@ -2,6 +2,7 @@ import { Grid, Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import React from "react";
 import moment from "moment";
+import PropTypes from "prop-types";
 
 const styles = {
     shiftValue: {
@@ -40,5 +41,11 @@ function ShiftInfo(props) {
         </Grid>
     );
 }
+
+ShiftInfo.propTypes = {
+    classes: PropTypes.object.isRequired,
+    beginDate: PropTypes.string.isRequired,
+    endDate: PropTypes.string.isRequired,
+};
 
 export default withStyles(styles)(ShiftInfo);

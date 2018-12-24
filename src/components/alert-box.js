@@ -1,6 +1,6 @@
-import { withStyles } from "@material-ui/styles";
 import FlashOnIcon from "@material-ui/icons/FlashOn";
-
+import { withStyles } from "@material-ui/styles";
+import PropTypes from "prop-types";
 import React from "react";
 
 const styles = {
@@ -24,7 +24,7 @@ const styles = {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        transform: "rotate(25deg)"
+        transform: "rotate(25deg)",
     },
 };
 
@@ -39,5 +39,9 @@ function AlertBox(props) {
         </div>
     );
 }
+
+AlertBox.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
 
 export default withStyles(styles)(AlertBox);

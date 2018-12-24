@@ -1,5 +1,6 @@
-import { Grid, Typography, Divider } from "@material-ui/core";
+import { Divider, Grid, Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
+import PropTypes from "prop-types";
 import React, { Fragment } from "react";
 
 const styles = {
@@ -78,5 +79,10 @@ function renderPricingTableSummary(classes, summary) {
         </Grid>
     );
 }
+
+PricingTable.propTypes = {
+    classes: PropTypes.object.isRequired,
+    pricingTables: PropTypes.array.isRequired,
+};
 
 export default withStyles(styles)(PricingTable);

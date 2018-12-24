@@ -1,5 +1,6 @@
 import { CircularProgress } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
+import PropTypes from "prop-types";
 import React from "react";
 
 const styles = {
@@ -17,9 +18,13 @@ function LoadingState(props) {
     const { classes } = props;
     return (
         <div className={classes.container}>
-            <CircularProgress color="secondary" />
+            <CircularProgress color="primary" />
         </div>
     );
 }
+
+LoadingState.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
 
 export default withStyles(styles)(LoadingState);

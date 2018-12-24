@@ -1,5 +1,6 @@
 import { Grid, Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
+import PropTypes from "prop-types";
 import React from "react";
 
 const styles = {
@@ -24,5 +25,11 @@ function EarningInfo(props) {
         </Grid>
     );
 }
+
+EarningInfo.propTypes = {
+    classes: PropTypes.object.isRequired,
+    earningHourly: PropTypes.string.isRequired,
+    earningTotal: PropTypes.string.isRequired,
+};
 
 export default withStyles(styles)(EarningInfo);

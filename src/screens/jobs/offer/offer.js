@@ -1,16 +1,17 @@
 import { Button, Grid, Typography, withStyles } from "@material-ui/core";
 import moment from "moment";
+import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { withRouter } from "react-router";
 
 import AlertBox from "../../../components/alert-box";
+import BreakInfo from "../../../components/break-info";
 import EarningInfo from "../../../components/earning-info";
 import ErrorState from "../../../components/error-state";
 import LoadingState from "../../../components/loading-state";
+import LocationInfo from "../../../components/location-info";
 import PricingTable from "../../../components/princing-table";
 import ShiftInfo from "../../../components/shift-info";
-import LocationInfo from "../../../components/location-info";
-import BreakInfo from "../../../components/break-info";
 import { fetchOffer } from "../../../shared/api";
 import OfferBar from "./components/offer-bar";
 
@@ -33,6 +34,8 @@ const styles = {
         padding: 16,
         flex: 1,
         overflow: "auto",
+        display: "flex",
+        justifyContent: "center",
     },
     shifts: {
         border: "1px solid #cccccc",
@@ -95,7 +98,7 @@ class Offer extends Component {
                 {error && <ErrorState onTryAgain={this.handleTryAgain} />}
                 {!loading && !error && (
                     <div className={classes.contents}>
-                        <Grid container spacing={32} justify="center" alignItems="center">
+                        <Grid container item spacing={32} xs={12} sm={10} lg={6} xl={4}>
                             <Grid item xs={12}>
                                 <AlertBox>
                                     <Typography variant="overline">Status</Typography>
@@ -159,7 +162,7 @@ class Offer extends Component {
                             )}
 
                             <Grid container item xs={12}>
-                                <Button variant="contained" color="secondary" fullWidth>
+                                <Button variant="contained" color="primary" fullWidth>
                                     Apply
                                 </Button>
                             </Grid>
@@ -170,5 +173,11 @@ class Offer extends Component {
         );
     }
 }
+
+Offer.propTypes = {
+    match: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
+    classes: PropTypes.object.isRequired,
+};
 
 export default withRouter(withStyles(styles)(Offer));
