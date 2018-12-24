@@ -30,7 +30,7 @@ function OffersItemHero(props) {
                 <AssignmentIcon className={classes.icon} />
             </Typography>
             <Typography className={classes.category}>{jobCategoryKey}</Typography>
-            <Typography variant="h2" className={classes.title}>
+            <Typography variant="h2" className={classes.title} gutterBottom>
                 {title}
             </Typography>
             <EarningInfo earningTotal={earningTotal} earningHourly={earningHourly} />

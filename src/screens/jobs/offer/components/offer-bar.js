@@ -5,24 +5,20 @@ import { withStyles } from "@material-ui/styles";
 import React from "react";
 
 const styles = {
-    toolbar: {
+    appBar: {
         backgroundImage: "linear-gradient(329deg, #fdb49e, #ff8d6b)",
         color: "#ffffff",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: 16,
+        flexShrink: 0,
     },
     backButton: {
-        position: "absolute",
-        top: 8,
-        left: 8,
+        marginLeft: "-12px !important",
+        marginRight: "12px !important",
     },
     container: {
         textAlign: "center",
-        minHeight: 200,
+        minHeight: 160,
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center",
     },
     icon: {
         fontSize: 30,
@@ -34,14 +30,13 @@ const styles = {
 function OffersItemHero(props) {
     const { classes, offer, onGoBack } = props;
     return (
-        <AppBar position="static">
-            <Toolbar className={classes.toolbar}>
+        <AppBar position="static" className={classes.appBar}>
+            <Toolbar>
                 <IconButton className={classes.backButton} color="inherit" aria-label="Back" onClick={onGoBack}>
                     <ArrowBackIcon />
                 </IconButton>
-
-                {offer && <OfferInfo {...props} />}
             </Toolbar>
+            {offer && <OfferInfo {...props} />}
         </AppBar>
     );
 }
