@@ -107,7 +107,7 @@ class Offers extends Component {
 
         return (
             <div className={classes.container}>
-                <AppBar position="static" className={classes.appBar}>
+                <AppBar position="static" color="secondary" className={classes.appBar}>
                     <Toolbar>
                         <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={this.handleMenuToggle}>
                             <MenuIcon />
