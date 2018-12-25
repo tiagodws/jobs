@@ -27,12 +27,7 @@ class DeclineCommentDialog extends Component {
         if (!open) return null;
 
         return (
-            <Dialog
-                open={open}
-                onClose={() => onClose(comment)}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
+            <Dialog open={open} onClose={() => onClose(comment)} aria-labelledby="alert-dialog-title">
                 <DialogTitle id="alert-dialog-title">Please enter your reason</DialogTitle>
 
                 <DialogContent>
