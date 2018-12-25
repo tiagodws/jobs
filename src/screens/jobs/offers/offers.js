@@ -27,8 +27,8 @@ import { declineOffer, fetchOffers } from "../../../shared/api";
 import { deauthUser } from "../../../shared/auth";
 import DeclineCommentDialog from "./components/dialogs/decline-comment-dialog";
 import DeclineReasonDialog from "./components/dialogs/decline-reason-dialog";
-import EmptyState from "./components/empty-state";
-import OffersItem from "./components/offers-item";
+import EmptyState from "./components/empty-state/empty-state";
+import OffersItem from "./components/offers-item/offers-item";
 
 const styles = {
     container: {

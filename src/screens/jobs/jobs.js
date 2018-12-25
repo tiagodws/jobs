@@ -2,8 +2,8 @@ import PropTypes from "prop-types";
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 import withAuth from "../../hocs/with-auth";
-import Offer from "./offer";
-import Offers from "./offers";
+import Offer from "./offer/offer";
+import Offers from "./offers/offers";
 
 function Jobs(props) {
     const { match } = props;

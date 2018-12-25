@@ -2,8 +2,8 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import React, { Component } from "react";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
-import Jobs from "./screens/jobs";
-import Login from "./screens/login";
+import Jobs from "./screens/jobs/jobs";
+import Login from "./screens/login/login";
 import theme from "./shared/theme";
 
 class App extends Component {
