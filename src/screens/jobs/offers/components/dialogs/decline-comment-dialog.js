@@ -24,6 +24,8 @@ class DeclineCommentDialog extends Component {
         const { open, onClose } = this.props;
         const { comment } = this.state;
 
+        if (!open) return null;
+
         return (
             <Dialog
                 open={open}

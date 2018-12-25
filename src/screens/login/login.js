@@ -3,19 +3,16 @@ import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import PropTypes from "prop-types";
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 
 import { login } from "../../shared/api";
 import { authUser, hasValidToken } from "../../shared/auth";
 
 const styles = {
     container: {
-        display: "flex",
-        height: "100%",
         padding: 16,
-        flexDirection: "column",
+        height: "100%",
         backgroundColor: "#93e7cf",
-        textAlign: "center",
     },
 };
 
@@ -72,46 +69,52 @@ class Login extends Component {
         const { username, password } = this.state;
 
         return (
-            <div className={classes.container}>
-                <Typography component="h1" variant="overline" color="textPrimary">
-                    Login
-                </Typography>
+            <Fragment>
+                <div className={classes.container}>
+                    <form onSubmit={this.handleSubmit} noValidate>
+                        <Grid container justify="center" alignItems="center">
+                            <Grid container item spacing={16} xs={12} sm={8} lg={4} xl={3}>
+                                <Grid item xs={12}>
+                                    <Typography component="h1" variant="overline" color="textPrimary" align="center">
+                                        Login
+                                    </Typography>
+                                </Grid>
 
-                <form onSubmit={this.handleSubmit} noValidate>
-                    <Grid container spacing={16}>
-                        <Grid item xs={12}>
-                            <FormControl fullWidth>
-                                <TextField
-                                    name="username"
-                                    value={this.state.username}
-                                    label="Email"
-                                    required
-                                    type="email"
-                                    onChange={this.handleInputChange}
-                                />
-                            </FormControl>
-                        </Grid>
+                                <Grid item xs={12}>
+                                    <FormControl fullWidth>
+                                        <TextField
+                                            name="username"
+                                            value={this.state.username}
+                                            label="Email"
+                                            required
+                                            type="email"
+                                            onChange={this.handleInputChange}
+                                        />
+                                    </FormControl>
+                                </Grid>
 
-                        <Grid item xs={12}>
-                            <FormControl fullWidth>
-                                <TextField
-                                    name="password"
-                                    value={this.state.password}
-                                    label="Password"
-                                    required
-                                    type="password"
-                                    onChange={this.handleInputChange}
-                                />
-                            </FormControl>
-                        </Grid>
+                                <Grid item xs={12}>
+                                    <FormControl fullWidth>
+                                        <TextField
+                                            name="password"
+                                            value={this.state.password}
+                                            label="Password"
+                                            required
+                                            type="password"
+                                            onChange={this.handleInputChange}
+                                        />
+                                    </FormControl>
+                                </Grid>
 
-                        <Grid item xs={12}>
-                            <Button variant="contained" color="primary" type="submit" disabled={!username || !password} fullWidth>
-                                Login
-                            </Button>
+                                <Grid item xs={12}>
+                                    <Button variant="contained" color="primary" type="submit" disabled={!username || !password} fullWidth>
+                                        Login
+                                    </Button>
+                                </Grid>
+                            </Grid>
                         </Grid>
-                    </Grid>
-                </form>
+                    </form>
+                </div>
 
                 <Dialog
                     open={this.state.dialogOpen}
@@ -131,7 +134,7 @@ class Login extends Component {
                         </Button>
                     </DialogActions>
                 </Dialog>
-            </div>
+            </Fragment>
         );
     }
 }
