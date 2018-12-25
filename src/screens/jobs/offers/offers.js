@@ -131,6 +131,7 @@ class Offers extends Component {
 
     handleCommentDialogClose(declineComment) {
         const { declineId, declineReason } = this.state;
+
         declineOffer(declineId, declineReason.name, declineComment)
             .then(() => {
                 this.setState({ commentDialogOpen: false });

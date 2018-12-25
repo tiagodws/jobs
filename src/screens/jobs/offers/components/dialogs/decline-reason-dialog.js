@@ -77,7 +77,7 @@ class DeclineReasonDialog extends Component {
                 </DialogContent>
 
                 <DialogActions>
-                    <Button onClick={onClose} color="primary">
+                    <Button onClick={() => onClose()} color="primary">
                         Go back
                     </Button>
 
